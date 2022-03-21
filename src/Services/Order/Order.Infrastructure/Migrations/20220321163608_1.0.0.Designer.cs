@@ -9,8 +9,8 @@ using Order.Infrastructure.Persistence;
 
 namespace Order.Infrastructure.Migrations
 {
-    [DbContext(typeof(PostgreDbContext))]
-    [Migration("20220320144716_1.0.0")]
+    [DbContext(typeof(EfCoreDbContext))]
+    [Migration("20220321163608_1.0.0")]
     partial class _100
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,9 @@ namespace Order.Infrastructure.Migrations
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");

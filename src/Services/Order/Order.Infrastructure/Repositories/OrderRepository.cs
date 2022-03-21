@@ -10,7 +10,7 @@ namespace Order.Infrastructure.Repositories
 {
     public class OrderRepository : Repository<Domain.Entities.Order>, IOrderRepository
     {
-        public OrderRepository(PostgreDbContext dbContext) : base(dbContext)
+        public OrderRepository(EfCoreDbContext dbContext) : base(dbContext)
         {
 
         }

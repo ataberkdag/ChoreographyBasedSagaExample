@@ -8,7 +8,7 @@ using Order.Infrastructure.Persistence;
 
 namespace Order.Infrastructure.Migrations
 {
-    [DbContext(typeof(PostgreDbContext))]
+    [DbContext(typeof(EfCoreDbContext))]
     partial class PostgreDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

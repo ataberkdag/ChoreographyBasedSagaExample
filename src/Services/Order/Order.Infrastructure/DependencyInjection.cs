@@ -23,7 +23,11 @@ namespace Order.Infrastructure
             {
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host(host: configuration.GetConnectionString("RabbitMQ"));
+                    cfg.Host(host: configuration.GetConnectionString("RabbitMQ"), h =>
+                    {
+                        h.Username(configuration.GetSection("RabbitMQ")["UserName"]);
+                        h.Password(configuration.GetSection("RabbitMQ")["Password"]);
+                    });
                 });
             });
 
@@ -31,7 +35,7 @@ namespace Order.Infrastructure
 
             #endregion MassTransit
 
-            services.AddDbContext<PostgreDbContext>(options =>
+            services.AddDbContext<EfCoreDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("OrderDb"));
             });

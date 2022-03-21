@@ -10,9 +10,9 @@ namespace Order.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : EntityBase
     {
-        private readonly PostgreDbContext _dbContext;
+        private readonly EfCoreDbContext _dbContext;
 
-        public Repository(PostgreDbContext dbContext)
+        public Repository(EfCoreDbContext dbContext)
         {
             this._dbContext = dbContext;
         }

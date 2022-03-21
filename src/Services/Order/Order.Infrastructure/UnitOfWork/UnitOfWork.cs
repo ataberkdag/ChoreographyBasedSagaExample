@@ -11,9 +11,9 @@ namespace Order.Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly PostgreDbContext _dbContext;
+        private readonly EfCoreDbContext _dbContext;
         private readonly IOrderRepository _orderRepository;
-        public UnitOfWork(PostgreDbContext dbContext)
+        public UnitOfWork(EfCoreDbContext dbContext)
         {
             this._dbContext = dbContext;
 

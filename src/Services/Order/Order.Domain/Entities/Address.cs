@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Order.Domain.Entities
+﻿namespace Order.Domain.Entities
 {
-    [Owned]
     public class Address
     {
         public string Line { get; set; }
