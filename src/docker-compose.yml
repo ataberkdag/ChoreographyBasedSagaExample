@@ -12,19 +12,20 @@ services:
     networks:
       - dev
 
-  orderdb:
+  appdb:
     image: postgres
     restart: always
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
-      - POSTGRES_DB=OrderDb
+      - POSTGRES_MULTIPLE_DATABASES=OrderDb,StockDb
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     networks:
       - dev
+
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -47,9 +48,25 @@ services:
       - "8001:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:OrderDb=Server=orderdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234;"
+      - "ConnectionStrings:OrderDb=Server=appdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234;"
     depends_on:
-      - orderdb
+      - appdb
+      - messagebroker
+    networks:
+      - dev
+
+  stock.api:
+    image: ${DOCKER_REGISTRY-}stockapi
+    build:
+      context: .
+      dockerfile: Services/Stock/Stock.API/Dockerfile
+    ports:
+      - "8002:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:StockDb=Server=appdb;Port=5432;Database=StockDb;User Id=admin;Password=admin1234;"
+    depends_on:
+      - appdb
       - messagebroker
     networks:
       - dev

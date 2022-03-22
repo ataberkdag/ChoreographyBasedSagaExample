@@ -1,4 +1,4 @@
-﻿using Order.Domain.Common;
+﻿using Shared.Base;
 using System;
 using System.Collections.Generic;
 

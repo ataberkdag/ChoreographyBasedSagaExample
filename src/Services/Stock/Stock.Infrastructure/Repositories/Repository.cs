@@ -1,8 +1,8 @@
-﻿using Order.Infrastructure.Persistence;
-using Shared.Base;
+﻿using Shared.Base;
+using Stock.Infrastructure.Persistence;
 using System.Linq;
 
-namespace Order.Infrastructure.Repositories
+namespace Stock.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : EntityBase
     {

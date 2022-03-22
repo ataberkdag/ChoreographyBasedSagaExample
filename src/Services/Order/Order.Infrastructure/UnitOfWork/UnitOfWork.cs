@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Order.Infrastructure.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IOrderUnitOfWork
     {
         private readonly EfCoreDbContext _dbContext;
         private readonly IOrderRepository _orderRepository;

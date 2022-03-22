@@ -3,7 +3,7 @@ using Shared.Base;
 using System;
 using System.Threading.Tasks;
 
-namespace Order.Infrastructure.MassTransit
+namespace Stock.Infrastructure.MassTransit
 {
     public class MassTransitHandler : IMassTransitHandler
     {

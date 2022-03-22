@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace Order.Domain.Common
 {
-    public interface IUnitOfWork
+    public interface IOrderUnitOfWork : IUnitOfWork
     {
         IOrderRepository OrderRepository { get; }
-
-        void SaveChanges();
-
-        Task SaveChangesAsync();
     }
 }

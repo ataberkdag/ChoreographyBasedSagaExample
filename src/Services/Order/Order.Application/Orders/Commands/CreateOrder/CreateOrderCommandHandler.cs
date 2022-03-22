@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using Order.Application.SeedWork;
 using Order.Domain.Common;
 using Order.Domain.Entities;
+using Shared.Base;
 using Shared.Events;
 using Shared.Messages;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,10 +12,10 @@ namespace Order.Application.Orders.Commands.CreateOrder
 {
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IOrderUnitOfWork _unitOfWork;
         private readonly IMassTransitHandler _massTransitHandler;
 
-        public CreateOrderCommandHandler(IUnitOfWork unitOfWork, IMassTransitHandler massTransitHandler)
+        public CreateOrderCommandHandler(IOrderUnitOfWork unitOfWork, IMassTransitHandler massTransitHandler)
         {
             this._unitOfWork = unitOfWork;
             this._massTransitHandler = massTransitHandler;
@@ -50,7 +47,7 @@ namespace Order.Application.Orders.Commands.CreateOrder
             });
 
             // Publish => Goes to exchange. Send => Directly Goes to Queue
-            await this._massTransitHandler.Publish(orderCreatedEvent);
+            await this._massTransitHandler.Publish(orderCreatedEvent, typeof(OrderCreatedEvent));
 
             return Unit.Value;
         }

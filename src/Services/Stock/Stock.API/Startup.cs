@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,9 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Shared;
+using Stock.API.Consumers;
+using Stock.Application;
+using Stock.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Stock.API
@@ -26,6 +32,27 @@ namespace Stock.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+
+            services.AddApplication(executingAssembly);
+            services.AddInfrastructure(Configuration,
+                x =>
+            {
+                x.AddConsumer<OrderCreatedEventConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(host: Configuration.GetConnectionString("RabbitMQ"), h =>
+                    {
+                        h.Username(Configuration.GetSection("RabbitMQ")["UserName"]);
+                        h.Password(Configuration.GetSection("RabbitMQ")["Password"]);
+
+                        cfg.ReceiveEndpoint(RabbitMQConsts.StockOrderCreatedEventQueueName, e =>
+                        {
+                            e.ConfigureConsumer<OrderCreatedEventConsumer>(context);
+                        });
+                    });
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

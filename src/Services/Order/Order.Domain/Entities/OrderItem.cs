@@ -1,4 +1,4 @@
-﻿using Order.Domain.Common;
+﻿using Shared.Base;
 
 namespace Order.Domain.Entities
 {

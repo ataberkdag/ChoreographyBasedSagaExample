@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Order.Application.SeedWork;
 using Order.Domain.Common;
 using Order.Infrastructure.MassTransit;
 using Order.Infrastructure.Persistence;
 using Order.Infrastructure.Repositories;
+using Shared.Base;
 using System;
 namespace Order.Infrastructure
 {
@@ -41,7 +41,7 @@ namespace Order.Infrastructure
             });
 
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+            services.AddScoped<IOrderUnitOfWork, UnitOfWork.UnitOfWork>();
 
             return services;
         }
