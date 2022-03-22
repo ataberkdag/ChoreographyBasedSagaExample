@@ -4,6 +4,8 @@ Dockerized Choreography-based Saga Example Project with Order, Stock and Payment
 
 ### Order.API
 
+- Publisher and Consumer. (Publish to StockAPI. Consume from StockAPI and PaymentAPI.)
+
 - [x] MassTransit and RabbitMQ
 
 - [x] EntityFramework Core - PostgreSQL
@@ -14,12 +16,27 @@ Dockerized Choreography-based Saga Example Project with Order, Stock and Payment
 
 - [x] Unit of Work Pattern
 
-- [ ] Fluent Validator
+- [x] Dockerized
 
-- [ ] Behaviours
 
 ### Stock.API
 
+- Publisher and Consumer. (Publish to PaymentAPI. Consume from OrderAPI and PaymentAPI.)
+
+- [x] MassTransit and RabbitMQ
+
+- [x] EntityFramework Core - PostgreSQL
+
+- [x] Mediator Pattern
+
+- [x] Repository Pattern
+
+- [x] Unit of Work Pattern
+
+- [x] Dockerized
+
+
+### Payment.API
 ...
 
 ## Run with Docker
@@ -32,10 +49,12 @@ docker-compose -f docker-compose.yml up -d
 
 ## Migration
 
-To apply migrations follow this command on Package Manager Console. (Set starting project to API and set default project to Infrastructure on Package Manager Console)
+To apply migrations follow this command on Package Manager Console for Order and Stock Microservices. (Set starting project to API and set default project to Infrastructure on Package Manager Console)
 
 ```bash
 update-database
 ```
+
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
