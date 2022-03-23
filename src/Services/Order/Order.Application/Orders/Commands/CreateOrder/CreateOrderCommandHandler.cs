@@ -1,7 +1,8 @@
-﻿using MediatR;
+﻿using Core.Application.SeedWork;
+using MediatR;
+using Microsoft.Extensions.Logging;
 using Order.Domain.Common;
 using Order.Domain.Entities;
-using Shared.Base;
 using Shared.Events;
 using Shared.Messages;
 using System.Linq;
@@ -14,11 +15,15 @@ namespace Order.Application.Orders.Commands.CreateOrder
     {
         private readonly IOrderUnitOfWork _unitOfWork;
         private readonly IMassTransitHandler _massTransitHandler;
+        private readonly ILogger<CreateOrderCommandHandler> _logger;
 
-        public CreateOrderCommandHandler(IOrderUnitOfWork unitOfWork, IMassTransitHandler massTransitHandler)
+        public CreateOrderCommandHandler(IOrderUnitOfWork unitOfWork, 
+            IMassTransitHandler massTransitHandler,
+            ILogger<CreateOrderCommandHandler> logger)
         {
             this._unitOfWork = unitOfWork;
             this._massTransitHandler = massTransitHandler;
+            this._logger = logger;
         }
 
         public async Task<Unit> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -37,6 +42,8 @@ namespace Order.Application.Orders.Commands.CreateOrder
             this._unitOfWork.OrderRepository.Add(order);
 
             await this._unitOfWork.SaveChangesAsync();
+
+            this._logger.LogInformation($"OrderId: {order.Id} | Order Created");
 
             var orderCreatedEvent = new OrderCreatedEvent(order.Id, request.BuyerId, 
                 new PaymentMessage(request.PaymentMethod.CardName, request.PaymentMethod.CardNumber, request.PaymentMethod.Expiration,

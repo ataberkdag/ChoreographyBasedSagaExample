@@ -71,6 +71,20 @@ services:
     networks:
       - dev
 
+  payment.api:
+    image: ${DOCKER_REGISTRY-}paymentapi
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.API/Dockerfile
+    ports:
+      - "8003:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - messagebroker
+    networks:
+      - dev
+
 networks:
   dev:
     driver: bridge
@@ -78,3 +92,4 @@ networks:
 volumes:
   postgres_data:
   pgadmin_data:
+

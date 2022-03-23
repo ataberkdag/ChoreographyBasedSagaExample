@@ -12,22 +12,19 @@ namespace Stock.Application.Stocks.Commands.AddStock
 {
     public class AddStockCommandHandler : IRequestHandler<AddStockCommand>
     {
-        private readonly IStockRepository _stockRepository;
         private readonly IStockUnitOfWork _unitOfWork;
         private readonly ILogger<AddStockCommandHandler> _logger;
 
-        public AddStockCommandHandler(IStockRepository stockRepository,
-            IStockUnitOfWork unitOfWork,
+        public AddStockCommandHandler(IStockUnitOfWork unitOfWork,
             ILogger<AddStockCommandHandler> logger)
         {
-            this._stockRepository = stockRepository;
             this._unitOfWork = unitOfWork;
             this._logger = logger;
         }
 
         public async Task<Unit> Handle(AddStockCommand request, CancellationToken cancellationToken)
         {
-            Domain.Entities.Stock stock = await this._stockRepository.GetByProductId(request.ProductId);
+            Domain.Entities.Stock stock = await this._unitOfWork.StockRepository.GetByProductId(request.ProductId);
 
             if (stock == null)
             {
@@ -38,7 +35,7 @@ namespace Stock.Application.Stocks.Commands.AddStock
                     Quantity = request.Quantity
                 };
 
-                this._stockRepository.Add(stock);
+                this._unitOfWork.StockRepository.Add(stock);
 
                 this._logger.LogInformation($"Stock created. Id: {stock.Id} Quantity: {stock.Quantity}");
             }

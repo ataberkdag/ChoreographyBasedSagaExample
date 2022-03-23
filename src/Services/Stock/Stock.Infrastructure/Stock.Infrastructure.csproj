@@ -5,15 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="8.0.0" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.15" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.Infrastructure\Core.Infrastructure.csproj" />
     <ProjectReference Include="..\Stock.Application\Stock.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MassTransit\" />
   </ItemGroup>
 
 </Project>

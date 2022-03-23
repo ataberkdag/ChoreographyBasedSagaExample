@@ -1,10 +1,6 @@
 ﻿using Order.Domain.Common;
 using Order.Infrastructure.Persistence;
 using Order.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Order.Infrastructure.UnitOfWork

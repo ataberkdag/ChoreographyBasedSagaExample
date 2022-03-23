@@ -1,11 +1,14 @@
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Order.API.Consumers;
 using Order.Application;
 using Order.Infrastructure;
+using Shared;
 
 namespace Order.API
 {
@@ -22,7 +25,35 @@ namespace Order.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplication();
-            services.AddInfrastructure(Configuration);
+            services.AddInfrastructure(Configuration, x =>
+            {
+                x.AddConsumer<StockNotReservedEventConsumer>();
+                x.AddConsumer<PaymentFailedEventConsumer>();
+                x.AddConsumer<PaymentSucceededEventConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(host: Configuration.GetConnectionString("RabbitMQ"), h =>
+                    {
+                        h.Username(Configuration.GetSection("RabbitMQ")["UserName"]);
+                        h.Password(Configuration.GetSection("RabbitMQ")["Password"]);
+                    });
+
+                    cfg.ReceiveEndpoint(RabbitMQConsts.OrderPaymentSucceededQueueName, e =>
+                    {
+                        e.ConfigureConsumer<PaymentSucceededEventConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RabbitMQConsts.OrderPaymentFailedQueueName, e =>
+                    {
+                        e.ConfigureConsumer<PaymentFailedEventConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint(RabbitMQConsts.OrderStockNotReservedQueueName, e =>
+                    {
+                        e.ConfigureConsumer<StockNotReservedEventConsumer>(context);
+                    });
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

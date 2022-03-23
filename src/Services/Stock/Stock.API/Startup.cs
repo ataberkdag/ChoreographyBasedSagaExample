@@ -38,6 +38,7 @@ namespace Stock.API
             services.AddInfrastructure(Configuration,
                 x =>
             {
+                x.AddConsumer<PaymentFailedEventConsumer>();
                 x.AddConsumer<OrderCreatedEventConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -49,6 +50,11 @@ namespace Stock.API
                         cfg.ReceiveEndpoint(RabbitMQConsts.StockOrderCreatedEventQueueName, e =>
                         {
                             e.ConfigureConsumer<OrderCreatedEventConsumer>(context);
+                        });
+
+                        cfg.ReceiveEndpoint(RabbitMQConsts.StockPaymentFailedQueueName, e =>
+                        {
+                            e.ConfigureConsumer<PaymentFailedEventConsumer>(context);
                         });
                     });
                 });
