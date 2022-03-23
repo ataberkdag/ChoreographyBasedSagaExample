@@ -4,9 +4,11 @@ Dockerized Choreography-based Saga Example Project with Order, Stock and Payment
 
 ### Order.API
 
-- Publisher and Consumer. (Publish to StockAPI. Consume from StockAPI and PaymentAPI.)
+#### General
 
-- [x] MassTransit and RabbitMQ
+- Publisher and Consumer. (Publish to StockAPI. Consumes from StockAPI and PaymentAPI.)
+
+- [x] RabbitMQ with MassTransit
 
 - [x] EntityFramework Core - PostgreSQL
 
@@ -17,13 +19,27 @@ Dockerized Choreography-based Saga Example Project with Order, Stock and Payment
 - [x] Unit of Work Pattern
 
 - [x] Dockerized
+
+#### Events
+
+##### Publish
+
+- OrderCreatedEvent
+
+##### Consume
+
+- StockNotReservedEvent
+
+- PaymentFailedEvent
 
 
 ### Stock.API
 
-- Publisher and Consumer. (Publish to PaymentAPI. Consume from OrderAPI and PaymentAPI.)
+#### General
 
-- [x] MassTransit and RabbitMQ
+- Publisher and Consumer. (Publish to PaymentAPI. Consumes from OrderAPI and PaymentAPI.)
+
+- [x] RabbitMQ with MassTransit
 
 - [x] EntityFramework Core - PostgreSQL
 
@@ -35,9 +51,46 @@ Dockerized Choreography-based Saga Example Project with Order, Stock and Payment
 
 - [x] Dockerized
 
+#### Events
+
+##### Publish
+
+- StockReservedEvent
+
+- StockNotReservedEvent
+
+##### Consume
+
+- OrderCreatedEvent
+
+- PaymentFailedEvent
+
 
 ### Payment.API
-...
+
+Receives successful stock message. 
+
+#### General
+
+- [x] Publisher and Consumer. (Publish event. Consumes from StockAPI.)
+
+- [x] RabbitMQ with MassTransit
+
+- [x] Mediator Pattern
+
+- [x] Dockerized
+
+#### Events
+
+##### Publish
+
+- PaymentSucceededEvent
+
+- PaymentFailedEvent
+
+##### Consume
+
+- StockReservedEvent
 
 ## Run with Docker
 
