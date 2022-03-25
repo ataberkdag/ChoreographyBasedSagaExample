@@ -1,6 +1,6 @@
 # Choreography-based Saga Example Project
 
-Dockerized Choreography-based Saga Example Project with Order, Stock and Payment microservices.
+Dockerized Choreography-based Saga Example Project with Onion Architecture. Includes Order, Stock and Payment microservices.
 
 ### Order.API
 
@@ -94,7 +94,6 @@ Receives successful stock message.
 
 ## Run with Docker
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
 ```bash
 docker-compose -f docker-compose.yml up -d
